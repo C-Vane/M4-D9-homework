@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+#related section div .img-fluid {
+  max-height: 200px;
+  min-width: 200px;
+}
+#related section div .img-fluid ~ div {
+  min-width: 200px;
+}
+.btn-dark {
+  border-radius: 0;
+  margin: 5px;
+  background-color: black;
+  border: none;
+  padding: 5px 40px;
+}
+.big-title {
+  font-family: "Bebas Neue", cursive;
+  font-size: 60px;
+  letter-spacing: -1px;
+  height: 60px;
+}
+.movie_type {
+  font-family: "Bebas Neue", cursive;
+  color: rgb(150, 150, 150);
+  letter-spacing: 5px;
+}

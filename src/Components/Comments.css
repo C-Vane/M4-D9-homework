@@ -1,0 +1,44 @@
+form,
+.row .col h6 {
+  color: rgb(223, 223, 223);
+}
+.card-dark,
+.card-body div,
+.form-control {
+  background-color: #141414;
+  color: aliceblue;
+}
+.card-body {
+  padding: 0;
+}
+.card {
+  overflow-y: scroll;
+  height: 50vh;
+}
+.btn-outline-warning {
+  border: none;
+  border-radius: 100%;
+}
+.btn-primary {
+  background-color: #ffff;
+  color: #141414;
+}
+.btn-primary:active,
+.btn-primary:hover {
+  background-color: #141414 !important;
+  color: #ffff !important;
+  border: 2px solid #fff;
+}
+.btn-primary,
+.btn-secondary {
+  width: fit-content;
+  border-color: #666666;
+  border-width: 1px;
+  border-radius: 0;
+  padding: 10px;
+  padding-top: 13px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin: 7px;
+  font-weight: 600;
+}

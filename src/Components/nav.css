@@ -1,0 +1,15 @@
+.dropdown-menu {
+  background-color: black;
+  border-radius: 0px;
+}
+.dropdown-item {
+  color: #fff;
+}
+.dropdown-item:hover,
+.dropdown-item:active {
+  color: #fff;
+  background-color: #2c2c2c;
+}
+a > ul {
+  padding-inline-start: 0;
+}
