@@ -1,0 +1,122 @@
+:root {
+  --primary-color: #e50914;
+  --dark-color: #141414;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #999;
+  display: block;
+  clear: both;
+  float: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background-color: black;
+}
+
+.background {
+  margin: 0;
+  padding: 5vh;
+  width: 100%;
+  min-height: 100vh;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(../assets/background1.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  object-fit: cover;
+}
+
+/*sign in*/
+#register {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 1px;
+  margin: auto;
+  float: center;
+}
+.error {
+  border: 1.2px solid red;
+}
+.btn-danger {
+  display: inline-block;
+  background: red;
+  color: white;
+  padding: 0.4rem 1.3rem;
+  font-size: 1rem;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  border-radius: 2px;
+  margin-top: 15px;
+}
+.form-label {
+  position: relative;
+  top: 30px;
+  left: 12px;
+  font-size: small;
+  color: rgb(83, 83, 83);
+}
+.form-group {
+  margin: 0;
+}
+.form-control {
+  padding-top: 25px;
+  height: 50px;
+}
+a:hover {
+  color: #2c2c2c;
+  text-decoration: none;
+}
+/*sign in end*/
+/*footer*/
+.socials {
+  color: rgb(185, 185, 185) !important;
+  font-size: 20px;
+}
+.socials i {
+  padding-right: 10px;
+}
+.footer a {
+  font-size: 13px;
+  padding: 2px;
+  color: rgb(185, 185, 185) !important;
+}
+.btn-footer {
+  color: rgb(185, 185, 185);
+  border: 1px solid rgb(185, 185, 185);
+  background-color: transparent;
+  height: 30px;
+  text-align: center;
+  transition: all ease 0.15s;
+}
+.btn-footer:hover {
+  background-color: rgb(185, 185, 185);
+  color: #2c2c2c;
+  border: 1px solid rgb(185, 185, 185);
+  transition: all ease 0.25s;
+}
+footer {
+  font-size: 13px;
+  padding: 2px;
+  transition: all ease 0.15s !important;
+  color: rgb(185, 185, 185) !important;
+}
+
+.footer-link:hover {
+  transition: all ease 0.15s !important;
+  color: #fff !important;
+}
+/*footer*/

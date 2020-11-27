@@ -16,6 +16,9 @@ import "./nav.css";
 
 const NavBar = (props) => {
   const { location } = props;
+  if (props.location.pathname === '/registration') {
+    return null
+  }
   return (
     <Navbar className=" navbar-expand-lg navbar-dark mb-0" expand="lg">
       <Link to="/">
@@ -120,8 +123,19 @@ const NavBar = (props) => {
                   <Dropdown.Item eventKey="3">Account</Dropdown.Item>
                   <Dropdown.Item eventKey="4">Help Center</Dropdown.Item>
                   <Dropdown.Item eventKey="5">
-                    Sign out of Netflix
+                    <Link to="/registration" className="text-decoration-none">
+                      <div
+                        className={
+                          location.pathname === "/myList"
+                            ? "nav-link active"
+                            : "nav-link"
+                        }>
+                        Register to Netflix
+                      </div>
+
+                    </Link>
                   </Dropdown.Item>
+
                 </Dropdown.Menu>
               </Dropdown>
             </div>
