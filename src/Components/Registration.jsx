@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Form, Row, Spinner, Col, Button } from 'react-bootstrap';
+import { Container, Form, Row, Spinner, Col, Button, Modal } from 'react-bootstrap';
 import "./registration.css";
 
 class Registration extends React.Component {
@@ -35,6 +35,7 @@ class Registration extends React.Component {
         errMessage: '',
         loading: false,
         inputs: true,
+        show: false,
     }
     updateRegistrationField = (e) => {
         let registration = { ...this.state.registration }
@@ -93,6 +94,8 @@ class Registration extends React.Component {
                 break;
         }
         this.setState({ errors })
+        console.log(Object.values(this.state.errors))
+        Object.values(this.state.errors).every((el) => el === false) && this.setState({ inputs: false })
     }
     checkEmail = (email) => {
         let index_found_at, index_found_dot;
@@ -112,13 +115,21 @@ class Registration extends React.Component {
         }
     }
     checkPostalCode = (password) => {
-        if (password.length > 4) {
-            let result;
-            for (let i = 0; i < password.length; i++) {
-                result = (password.charAt(i).typeOf === 'number') ? true : false
-            }
-            return (result)
-        }
+        return (password.length > 4 && /^\d+$/.test(password)) ? true : false;
+    }
+
+    checkcardNumber = (cardNumber) => {
+        let regexp = /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/;
+        return (regexp.test(cardNumber)) ? true : false;
+    }
+    checkcardExpiry = (cardExpiry) => {
+        const date = cardExpiry.split("/" || "-")
+        return (date[0] > 0 && date[0] < 13 && date[1] > 20) ? true : false
+    }
+    checkPassword = (password) => (password.length > 8 && /\d/.test(password) && /[a-zA-Z]/g.test(password)) ? true : false
+
+    checkForm = () => {
+
     }
 
     render() {
@@ -271,7 +282,8 @@ class Registration extends React.Component {
                                     <Form.Group>
                                         <Form.Label htmlFor="cardNumber">Credit Card Number</Form.Label>
                                         <Form.Control
-                                            type="text"
+                                            type="tel"
+                                            maxLength="19"
                                             name="cardNumber"
                                             id="cardNumber"
                                             autoComplete="cc-number"
@@ -364,6 +376,20 @@ class Registration extends React.Component {
                     <Button type="submit" id="sign in" variant="danger" disabled={this.state.inputs}>Sign up</Button>
                 </Form>
             </Container>
+            <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose}>
+                        Close
+          </Button>
+                    <Button variant="primary" onClick={this.handleClose}>
+                        Save Changes
+          </Button>
+                </Modal.Footer>
+            </Modal>
         </div>;
     }
 }
