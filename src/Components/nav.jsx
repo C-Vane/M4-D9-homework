@@ -7,16 +7,17 @@ import {
   Image,
   Nav,
   Dropdown,
-  DropdownButton,
   Button,
   Container,
+  Row,
 } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import "./nav.css";
 
 const NavBar = (props) => {
-  const { location } = props;
-  if (props.location.pathname === '/registration' || props.location.pathname === "/" || props.location.pathname === "/signIn") {
+  const { location, user } = props;
+  console.log(user)
+  if (location.pathname === '/registration' || location.pathname === "/" || location.pathname === "/signIn" || location.pathname === "/profile") {
     return null
   }
   return (
@@ -28,9 +29,9 @@ const NavBar = (props) => {
           alt="Netflix"
         />
       </Link>
-      <Container>
+      <Container className="justify-content-end justify-content-lg-start">
         <Navbar.Toggle aria-controls="navbarSupportedContent" />
-        <Navbar.Collapse id="navbarSupportedContent">
+        <Navbar.Collapse id="navbarSupportedContent" className="m">
           <Nav className="mr-auto">
             <Link to="/main" className="text-decoration-none">
               <div
@@ -102,37 +103,36 @@ const NavBar = (props) => {
             <div>
               <Dropdown as={ButtonGroup}>
                 <Button variant="btn">
-                  {" "}
-                  <Image
-                    src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"
-                    width="30"
-                  />
+                  <div className="contain">
+                    <Image
+                      src={props.user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
+                    />
+                  </div>
                 </Button>
                 <Dropdown.Toggle split variant="btn" id="dropdown-custom-2" />
                 <Dropdown.Menu className="super-colors">
-                  <Dropdown.Item eventKey="1">
-                    <Image
-                      src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"
-                      width="30"
-                      height="30"
-                    />{" "}
-                    Strive Student
+                  <Dropdown.Item eventKey="1" >
+                    <Row>
+                      <div className="mr-1 contain" >
+                        <Image
+                          src={props.user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
+                        /></div>
+                      <span>{props.user.name ? props.user.name : "Strive Student"}</span></Row>
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="2">Manage Profiles</Dropdown.Item>
+
+                  <Dropdown.Item eventKey="2"><Link to='/profile'>
+                    <div className="text-white">Manage Profiles</div>
+                  </Link>
+                  </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item eventKey="3">Account</Dropdown.Item>
+                  <Dropdown.Item eventKey="3"><Link to='/account'>
+                    <div className="text-white">Account</div></Link></Dropdown.Item>
                   <Dropdown.Item eventKey="4">Help Center</Dropdown.Item>
                   <Dropdown.Item eventKey="5">
-                    <Link to="/registration" className="text-decoration-none">
-                      <div
-                        className={
-                          location.pathname === "/myList"
-                            ? "nav-link active"
-                            : "nav-link"
-                        }>
-                        Register to Netflix
+                    <Link to="/" className="text-decoration-none">
+                      <div className="text-white" onClick={props.logOut}>
+                        Log Out
                       </div>
-
                     </Link>
                   </Dropdown.Item>
 

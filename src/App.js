@@ -11,6 +11,7 @@ import TvShows from "./Components/TvShowsPage/TvShows";
 import Registration from "./Components/registrationPage/Registration";
 import SignIn from "./Components/signIn/signIn";
 import { getFunction } from "./Components/CRUDFunctions";
+import ProfilePage from "./Components/profilePage/profilePage";
 
 class App extends React.Component {
   state = {
@@ -21,17 +22,21 @@ class App extends React.Component {
   getId = async (id) => {
     const user = await getFunction("user/" + id);
     this.setState({ user, auth: true });
+    return user;
   };
+
+  logOut = () => this.setState({ user: {}, auth: false });
   render() {
     const { user, auth } = this.state;
     return (
       <div className='App'>
         <Router>
-          <Nav user={user} />
+          <Nav user={user} logOut={this.logOut} />
           <Route path='/' exact component={LandingPage} />
           <Route path='/signIn' exact render={(props) => <SignIn getId={this.getId} {...props} />} />
           <Route path='/registration' exact render={(props) => <Registration getId={this.getId} {...props} />} />
           <Route path='/main' exact render={(props) => (auth ? <Main user={user} {...props} /> : <Redirect to='/' />)} />
+          <Route path='/profile' exact render={(props) => (auth ? <ProfilePage getId={this.getId} user={user} logOut={this.logOut} {...props} /> : <Redirect to='/' />)} />
           <Route path='/details/:id' exact render={(props) => (auth ? <ShowDetail user={user} {...props} /> : <Redirect to='/' />)} />
           <Route path='/shows' exact render={(props) => (auth ? <TvShows series={"s={and}&type=series"} {...props} /> : <Redirect to='/' />)} />
           <Footer />

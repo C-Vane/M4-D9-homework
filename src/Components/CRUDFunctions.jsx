@@ -31,6 +31,22 @@ const postFunction = async (endp, data) => {
         console.log(error);
     }
 };
+const postFunctionImage = async (endp, data) => {
+    try {
+        const response = await fetch(url + endp, {
+            method: "POST",
+            body: data,
+        });
+        if (response.ok) {
+            return await response.json();
+        } else {
+
+            return (response.status === 409) ? await response.json() : await response.text();
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
 const putFunction = async (endp, data) => {
     try {
         const response = await fetch(url + endp, {
@@ -55,8 +71,7 @@ const deleteFunction = async (endp) => {
             method: "DELETE",
         });
         if (response.ok) {
-            console.log(await response.text());
-            return true;
+            return await response.text()
         } else {
             console.log(await response.text());
             return false;
@@ -69,6 +84,7 @@ const deleteFunction = async (endp) => {
 module.exports = {
     getFunction,
     postFunction,
+    postFunctionImage,
     deleteFunction,
     putFunction,
 };

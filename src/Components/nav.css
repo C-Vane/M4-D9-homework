@@ -13,3 +13,16 @@
 a > ul {
   padding-inline-start: 0;
 }
+.dropdown .contain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 30px;
+  width: 30px;
+}
+.dropdown img {
+  object-fit: contain;
+  min-width: 100%;
+  min-height: 100%;
+}
