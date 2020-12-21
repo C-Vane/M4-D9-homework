@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MovieItem from './MovieItem';
+import MovieItem from '../MovieItem';
 import { Spinner, Container, Row } from 'react-bootstrap';
-import Results from './Results'
+import Results from '../homePage/Results'
 
 class TvShows extends React.Component {
     state = {
@@ -13,7 +13,6 @@ class TvShows extends React.Component {
     pages = ['1', '2', '3', '4', '5']
     componentDidMount = () => {
         this.pages.forEach(page => this.fetchMovies(page));
-        console.log(this.state)
         setTimeout(() => {
             this.setState({ loading: false })
         }, 1000);
@@ -21,14 +20,12 @@ class TvShows extends React.Component {
     fetchMovies = async (page) => {
         try {
             let response = await fetch(this.url + this.props.series + "&page=" + page);
-            console.log(page)
             if (response.ok) {
                 let movies_list = await response.json();
                 let movies = [[...this.state.movies], [movies_list.Search]].flat();
                 this.setState({
                     movies: movies.flat(),
                 })
-                console.log(this.state.movies)
             }
         } catch (e) {
             console.log("error happened, that's life", e)

@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col, Image, Jumbotron, Badge } from "react-bootstrap";
 import Comments from "./Comments";
-import Results from "./Results";
+import Results from "../homePage/Results";
 import RelatedMovies from "./RelatedMovies";
 
 class ShowDetail extends React.Component {

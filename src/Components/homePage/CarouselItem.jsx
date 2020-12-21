@@ -1,7 +1,7 @@
 import React from 'react';
 import { propTypes } from 'react-bootstrap/esm/Image';
 import { Carousel, Row, Spinner } from 'react-bootstrap';
-import MovieItem from './MovieItem';
+import MovieItem from '../MovieItem';
 import PropTypes from 'prop-types';
 
 
@@ -67,10 +67,10 @@ class carouselItem extends React.Component {
                             <Row>
                                 {movies.flat().map((single_movie, i) => {
                                     if (i < 6) {
-                                        if (i > 0 && i < 2) return <MovieItem movie={single_movie} history={history} addclass="mobile"></MovieItem>
-                                        else if (i > 1 && i < 4) return <MovieItem movie={single_movie} history={history} addclass="tablet"></MovieItem>
-                                        else if (i > 3) return <MovieItem movie={single_movie} history={history} addclass="desktop"></MovieItem>
-                                        else return <MovieItem movie={single_movie} history={history} ></MovieItem>
+                                        if (i > 0 && i < 2) return <MovieItem key={i} movie={single_movie} history={history} addclass="mobile"></MovieItem>
+                                        else if (i > 1 && i < 4) return <MovieItem key={i} movie={single_movie} history={history} addclass="tablet"></MovieItem>
+                                        else if (i > 3) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
+                                        else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
                                 })
                                 }
@@ -81,10 +81,10 @@ class carouselItem extends React.Component {
                             <Row>
                                 {movies.flat().map((single_movie, i) => {
                                     if (i > 6 && i < 13) {
-                                        if (i > 7 && i < 9) return <MovieItem movie={single_movie} history={history} addclass="mobile"></MovieItem>
-                                        else if (i > 8 && i < 11) return <MovieItem movie={single_movie} history={history} addclass="tablet"></MovieItem>
-                                        else if (i > 10) return <MovieItem movie={single_movie} history={history} addclass="desktop"></MovieItem>
-                                        else return <MovieItem movie={single_movie} history={history} ></MovieItem>
+                                        if (i > 7 && i < 9) return <MovieItem key={i} movie={single_movie} history={history} addclass="mobile"></MovieItem>
+                                        else if (i > 8 && i < 11) return <MovieItem key={i} movie={single_movie} history={history} addclass="tablet"></MovieItem>
+                                        else if (i > 10) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
+                                        else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
                                 })
                                 }
@@ -95,10 +95,10 @@ class carouselItem extends React.Component {
                             <Row>
                                 {movies.flat().map((single_movie, i) => {
                                     if (i > 12 && i < 19) {
-                                        if (i > 13 && i < 15) return <MovieItem movie={single_movie} history={history} addclass="mobile"></MovieItem>
-                                        else if (i > 14 && i < 17) return <MovieItem movie={single_movie} history={history} addclass="tablet"></MovieItem>
-                                        else if (i > 16) return <MovieItem movie={single_movie} history={history} addclass="desktop"></MovieItem>
-                                        else return <MovieItem movie={single_movie} history={history} ></MovieItem>
+                                        if (i > 13 && i < 15) return <MovieItem key={i} movie={single_movie} history={history} addclass="mobile"></MovieItem>
+                                        else if (i > 14 && i < 17) return <MovieItem key={i} movie={single_movie} history={history} addclass="tablet"></MovieItem>
+                                        else if (i > 16) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
+                                        else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
                                 })
                                 }

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container, Form, Row, Spinner, Col, Button, Modal } from 'react-bootstrap';
+import { Container, Form, Row, Spinner, Col, Button, Modal, Image, Nav, Table, Alert } from 'react-bootstrap';
+import { Link, Redirect } from 'react-router-dom';
+import { postFunction } from '../CRUDFunctions';
 import "./registration.css";
 
 class Registration extends React.Component {
@@ -18,6 +20,7 @@ class Registration extends React.Component {
             cardExpDate: "",
             cvvNumber: "",
         },
+        redirect: false,
         errors: {
             name: 0,
             surname: 0,
@@ -65,6 +68,50 @@ class Registration extends React.Component {
                 break;
             case 'passwordConfirm':
                 errors[currentId] = current === registration.password ? false : true;
+                Object.keys(this.state.registration).forEach((key) => {
+                    if (this.state.registration[key] !== '') {
+                        currentId = key
+                        current = registration[currentId]
+                        switch (currentId) {
+                            case 'name':
+                                errors[currentId] = current.length <= 2 ? true : false;
+                                break;
+                            case 'surname':
+                                errors[currentId] = current.length <= 3 ? true : false;
+                                break;
+
+                            case 'email':
+                                errors[currentId] = this.checkEmail(current) ? false : true;
+                                break;
+                            case 'yearOfBirth':
+                                errors[currentId] = current <= 2002 && current >= 1910 ? false : true;
+                                break;
+                            case 'address':
+                                errors[currentId] = current.length <= 5 ? true : false;
+                                break;
+                            case 'city':
+                                errors[currentId] = current.length <= 2 ? true : false;
+                                break;
+                            case 'postalCode':
+                                errors[currentId] = this.checkPostalCode(current) ? false : true;
+                                break;
+                            case 'cardNumber':
+                                errors[currentId] = this.checkcardNumber(current) ? false : true;
+                                break;
+                            case 'cardExpDate':
+                                errors[currentId] = this.checkcardExpiry(current) ? false : true;
+                                break;
+                            case 'cvvNumber':
+                                errors[currentId] = (current.length !== 3) ? true : false;
+                                break;
+
+                            default:
+                                console.log("Error occurd in Validation")
+                                this.setState({ errMessage: "Error in Validation" })
+                                break;
+                        }
+                    }
+                })
                 break;
             case 'yearOfBirth':
                 errors[currentId] = current <= 2002 && current >= 1910 ? false : true;
@@ -94,7 +141,6 @@ class Registration extends React.Component {
                 break;
         }
         this.setState({ errors })
-        console.log(Object.values(this.state.errors))
         Object.values(this.state.errors).every((el) => el === false) && this.setState({ inputs: false })
     }
     checkEmail = (email) => {
@@ -128,12 +174,37 @@ class Registration extends React.Component {
     }
     checkPassword = (password) => (password.length > 8 && /\d/.test(password) && /[a-zA-Z]/g.test(password)) ? true : false
 
-    checkForm = () => {
-
+    checkForm = (e) => {
+        e.preventDefault()
+        this.setState({ show: true })
     }
-
+    handleClose = () => this.setState({ show: false })
+    createAccount = async () => {
+        this.handleClose()
+        const user = await postFunction("user", this.state.registration)
+        if (user) {
+            this.props.getId(user._id)
+            this.setState({ redirect: true })
+        } else {
+            this.setState({ errMessage: typeof (user) === "object" ? user.errors[0].msg : "Email already Used" })
+            setTimeout(() => {
+                this.setState({ errMessage: "" })
+            }, 2000);
+        }
+    }
     render() {
+        if (this.state.redirect) {
+            return <Redirect to="/main" />
+        }
         return <div className="background">
+            <Nav>
+                <Link to="/">
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="netflix-font"
+                        style={{ backgroundColor: "transparent" }} width="200px" /></Link>
+                <Link to="/signIn">
+                    <Button className="btns" style={{ position: "absolute", right: 0 }} >Sign In</Button></Link>
+            </Nav>
+            {this.state.errMessage.length > 0 && <Alert variant="denger">{this.state.errMessage}</Alert>}
             {
                 this.state.loading && (
                     <Row className="ml-2 d-flex justify-content-center ">
@@ -144,7 +215,7 @@ class Registration extends React.Component {
                 )
             }
             <Container>
-                <Form onSubmit={this.checkForm} id="register">
+                <Form onSubmit={this.checkForm} className="register">
                     <h2>Sign Up</h2>
                     <Row>
                         <Col>
@@ -378,15 +449,26 @@ class Registration extends React.Component {
             </Container>
             <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Create Netflix Account</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                    <Table size="sm" responsive>
+                        <tbody>
+                            {Object.keys(this.state.registration).map((key) =>
+                                <tr>
+                                    <td><strong>{key.split(/(?=[A-Z])/).join(" ").toUpperCase()}</strong></td>
+                                    <td>{this.state.registration[key]}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </Table>
+                </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
+                    <Button variant="outline-secondary" onClick={this.handleClose}>
                         Close
           </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                        Save Changes
+                    <Button variant="danger" onClick={this.createAccount}>
+                        Create Account
           </Button>
                 </Modal.Footer>
             </Modal>

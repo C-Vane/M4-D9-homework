@@ -1,5 +1,5 @@
 import React from 'react';
-import Results from './Results';
+import Results from '../homePage/Results';
 import './relatedMovies.css'
 
 class RelatedMovies extends React.Component {

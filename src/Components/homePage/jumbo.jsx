@@ -2,9 +2,9 @@
 
 import React from "react";
 import { Jumbotron, Container, Image, Button, Row } from "react-bootstrap";
-import "../App.css";
-import Jumbovid from "../assets/jumbovid.mp4";
-import './relatedMovies.css'
+import "../../App.css";
+import Jumbovid from "../../assets/jumbovid.mp4";
+import '../mediaPage/relatedMovies.css'
 //import ReactPlayer from "react-player/youtube";
 
 class Jumbo extends React.Component {

@@ -16,12 +16,12 @@ import "./nav.css";
 
 const NavBar = (props) => {
   const { location } = props;
-  if (props.location.pathname === '/registration') {
+  if (props.location.pathname === '/registration' || props.location.pathname === "/" || props.location.pathname === "/signIn") {
     return null
   }
   return (
     <Navbar className=" navbar-expand-lg navbar-dark mb-0" expand="lg">
-      <Link to="/">
+      <Link to="/main">
         <Image
           style={{ height: "35px" }}
           src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
@@ -32,7 +32,7 @@ const NavBar = (props) => {
         <Navbar.Toggle aria-controls="navbarSupportedContent" />
         <Navbar.Collapse id="navbarSupportedContent">
           <Nav className="mr-auto">
-            <Link to="/" className="text-decoration-none">
+            <Link to="/main" className="text-decoration-none">
               <div
                 className={
                   location.pathname === "/" ? "nav-link active" : "nav-link"
