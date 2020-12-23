@@ -73,7 +73,7 @@
   width: 140px;
   height: 140px;
 }
-img {
+#profile img {
   object-fit: contain;
   min-width: 100%;
   min-height: 100%;

@@ -17,7 +17,7 @@ import "./nav.css";
 const NavBar = (props) => {
   const { location, user } = props;
   console.log(user)
-  if (location.pathname === '/registration' || location.pathname === "/" || location.pathname === "/signIn" || location.pathname === "/profile") {
+  if (location.pathname === '/registration' || location.pathname === "/" || location.pathname === "/signIn" || location.pathname === "/profile" || location.pathname === "/office") {
     return null
   }
   return (
