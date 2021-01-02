@@ -2,24 +2,26 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Container, Row, Col, Image, Jumbotron, Badge } from "react-bootstrap";
+import { Container, Row, Col, Image, Jumbotron, Badge, Button } from "react-bootstrap";
 import Comments from "./Comments";
 import Results from "../homePage/Results";
 import RelatedMovies from "./RelatedMovies";
+import { getFunction, postFunction, deleteFunction } from "../CRUDFunctions";
 
 class ShowDetail extends React.Component {
   state = {
     movie: {},
     loaded: false,
+    rate: false,
+    myList: false,
   };
-  url = "http://www.omdbapi.com/?apikey=ff133ca5&";
-  load = () => {
-    let movie_id = "i=" + this.props.match.params.id;
-    this.fetchMovie(movie_id, 0);
-  };
+
+
+
   constructor(props) {
     super(props);
-    this.load();
+    this.fetchMovie(this.props.match.params.id, 0);
+    this.fetchMyList()
   }
   related = () => {
     const { movie, loaded } = this.state;
@@ -37,24 +39,39 @@ class ShowDetail extends React.Component {
     }
   };
   fetchMovie = async (id, type) => {
-    try {
-      let response = await fetch(this.url + id);
 
-      if (response.ok) {
-        let movie = await response.json();
-        console.log(movie);
-        return type === 0
-          ? this.setState({ movie, loaded: true })
-          : movie.Search;
-      }
-    } catch (e) {
-      console.log("error happened, that's life", e);
-      this.setState({ loading: false });
+    let response = await getFunction("media/" + id);
+    if (response) {
+      return type === 0
+        ? this.setState({ movie: response, loaded: true })
+        : response.Search;
     }
+
   };
+  addToList = async () => {
+    const response = await postFunction("user/" + this.props.user._id + "/myList/" + this.props.match.params.id)
+    if (response) {
+      this.setState({ myList: true })
+    }
+  }
+  removeFromList = async () => {
+    const response = await deleteFunction("user/" + this.props.user._id + "/myList/" + this.props.match.params.id)
+    if (response) {
+      this.setState({ myList: false })
+    }
+  }
+  fetchMyList = async () => {
+    const response = await getFunction("user/" + this.props.user._id + "/myList")
+    if (response) {
+      console.log(response)
+      const added = response.find((id) => id === this.props.match.params.id)
+      this.setState({ myList: added })
+    }
+  }
+  rateMovie = () => this.setState({ rate: !this.state.rate })
 
   render() {
-    const { movie } = this.state;
+    const { movie, rate, myList } = this.state;
     const { id } = this.props.match.params;
     return (
       <>
@@ -63,7 +80,7 @@ class ShowDetail extends React.Component {
           className="text-white"
           style={{
             width: "100%",
-            height: "90vh",
+            minHeight: "90vh",
             position: "relative",
             backgroundImage: "url(" + movie.Poster + ")",
             backgroundPosition: "center center",
@@ -104,7 +121,12 @@ class ShowDetail extends React.Component {
               <Row>
                 <div className="plot mt-2">
                   <p className=" text-white">{movie.Plot}</p>
-                  <p className="text-white">
+                  <Row>
+                    <Button as={Col} variant="btn" className="btns m-2">Play</Button>
+                    <Button as={Col} variant="outline-light" className="m-2 rounded-0" active={myList} onClick={myList ? this.removeFromList : this.addToList}>{myList ? "✓" : "+"} My List</Button>
+                    <Button as={Col} variant="outline-light" className="m-2 rounded-0" onClick={this.rateMovie}>Rate</Button>
+                  </Row>
+                  <p className="text-white mt-3">
                     <span className="text-muted">Staring:</span > {movie.Actors}
                   </p>
                   <p className="text-white">
@@ -132,7 +154,7 @@ class ShowDetail extends React.Component {
         </Jumbotron>
         <Container>
           <Col>
-            <Comments id={id} />
+            <Comments id={id} userId={this.props.user._id} rate={rate} rated={this.rateMovie} />
           </Col>
           <Row id="related">
             <h2 className="text-white-50">More TV Shows & Movies</h2>

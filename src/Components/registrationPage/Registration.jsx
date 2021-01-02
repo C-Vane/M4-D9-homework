@@ -141,7 +141,7 @@ class Registration extends React.Component {
                 break;
         }
         this.setState({ errors })
-        Object.values(this.state.errors).every((el) => el === false) && this.setState({ inputs: false })
+        Object.values(errors).every((el) => el === false) && this.setState({ inputs: false })
     }
     checkEmail = (email) => {
         let index_found_at, index_found_dot;
@@ -221,6 +221,7 @@ class Registration extends React.Component {
                         <Col>
                             <Row>
                                 <Col>
+                                    <small className={this.state.errMessage ? "text-danger" : "d-none"} > {this.state.errMessage}</small>
                                     <Form.Group>
                                         <Form.Label htmlFor="name">Name</Form.Label>
                                         <Form.Control

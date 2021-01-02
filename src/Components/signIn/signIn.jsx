@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Form, Row, Spinner, Col, Button, Modal, Image, Nav } from 'react-bootstrap';
+import { Container, Form, Row, Spinner, Col, Button, Image, Nav } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { getFunction } from '../CRUDFunctions'
 import "../registrationPage/registration.css";
@@ -34,8 +34,9 @@ class SignIn extends React.Component {
         if (currentId === 'email') errors[currentId] = this.checkEmail(current) ? false : true;
         if (currentId === 'password') errors[currentId] = this.checkPassword(current) ? false : true;
         this.setState({ errors: errors })
-        Object.values(this.state.errors).every((el) => el === false) && this.setState({ inputs: false })
+        Object.values(errors).every((el) => el === false) && this.setState({ inputs: false })
     }
+
     checkEmail = (email) => {
         let index_found_at, index_found_dot;
         //check if the string exists
@@ -60,12 +61,12 @@ class SignIn extends React.Component {
         const user = await getFunction("user?email=" + this.state.SignIn.email)
         if (user && user.password === this.state.SignIn.password) {
             this.props.getId(user._id)
-            this.setState({ redirect: true })
+            this.setState({ redirect: user.role === "admin" ? "office" : "main" })
         } else this.setState({ errors: { email: 1, password: 1 } })
     }
     render() {
         if (this.state.redirect) {
-            return <Redirect to="/main" />
+            return <Redirect to={"/" + this.state.redirect} />
         }
         return <div className="background">
 

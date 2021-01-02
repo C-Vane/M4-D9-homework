@@ -17,7 +17,7 @@ import BackOffice from "./Components/backOffice/backOffice";
 class App extends React.Component {
   state = {
     user: {},
-    auth: true,
+    auth: false,
     admin: false,
   };
 
@@ -39,7 +39,7 @@ class App extends React.Component {
           <Route path='/office' exact render={(props) => admin && <BackOffice admin={user} logOut={this.logOut} {...props} />} />
           <Route path='/signIn' exact render={(props) => <SignIn getId={this.getId} {...props} />} />
           <Route path='/registration' exact render={(props) => <Registration getId={this.getId} {...props} />} />
-          <Route path='/main' exact render={(props) => (!admin ? auth ? <Main user={user} {...props} /> : <Redirect to='/' /> : <Redirect to='/office' />)} />
+          <Route path='/main' exact render={(props) => (auth ? <Main user={user} {...props} /> : <Redirect to='/' />)} />
           <Route path='/profile' exact render={(props) => (auth && !admin ? <ProfilePage getId={this.getId} user={user} logOut={this.logOut} {...props} /> : <Redirect to='/' />)} />
           <Route path='/details/:id' exact render={(props) => (auth && !admin ? <ShowDetail user={user} {...props} /> : <Redirect to='/' />)} />
           <Route path='/shows' exact render={(props) => (auth && !admin ? <TvShows series={"s={and}&type=series"} {...props} /> : <Redirect to='/' />)} />

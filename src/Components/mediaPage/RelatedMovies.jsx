@@ -28,6 +28,8 @@ class RelatedMovies extends React.Component {
                     });
                     return this.setState({ episodes, loading: false });
                 }
+            } else {
+                console.log(response)
             }
         } catch (e) {
             console.log("error happened, that's life", e)
@@ -43,7 +45,7 @@ class RelatedMovies extends React.Component {
     componentDidMount = () => {
         const { Id, Type } = this.props
         if (Type === "0") {
-            this.fetchMovies("s=" + Id.split(" ")[0], Type);
+            this.fetchMovies(Id.startsWith("The") ? "s=" + Id.split(" ")[1] : "s=" + Id.split(" ")[0], Type);
         }
         setTimeout(() => {
             this.setState({

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Container, Row, Col, Image, Form, Button, ToggleButtonGroup, ToggleButton, Spinner } from 'react-bootstrap';
 import CommentsList from './CommentsList';
 import "./Comments.css"
+import { postFunction } from '../CRUDFunctions';
 
 
 class Comments extends React.Component {
@@ -13,7 +14,8 @@ class Comments extends React.Component {
         review: {
             comment: '',
             rate: "0",
-            elementId: ""
+            elementID: "",
+            userId: this.props.userId
         },
     }
 
@@ -21,45 +23,29 @@ class Comments extends React.Component {
         event.preventDefault()
         this.setState({ loading: true })
         const { review } = this.state;
-        try {
-            let response = await fetch("https://striveschool-api.herokuapp.com/api/comments/",
-                {
-                    method: 'POST',
-                    body: JSON.stringify(review),
-                    headers: new Headers({
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmI2OTE2Mjk4MzViMDAwMTc1ODRmNTkiLCJpYXQiOjE2MDU4MDAyOTAsImV4cCI6MTYwNzAwOTg5MH0.EDD_ZH6yNBd1WStOkn3RPWNiO1Cm44mhsuhN43Auc2U",
-                    })
-                })
-            if (response.ok) {
-                alert('Comment sent!')
-                console.log(review)
-                this.setState({
-                    review: {
-                        comment: '',
-                        rate: "0",
-                        elementId: ""
-                    },
-                    errMessage: '',
-                    loading: false,
-                    refreshList: true,
-                })
-            } else {
-                console.log('an error occurred')
-                let error = await response.json()
-                this.setState({
-                    errMessage: error.message,
-                    loading: false,
-                })
-            }
-        } catch (e) {
-            console.log(e) // Error
-            alert(e)
+        const response = await postFunction("reviews", review)
+        if (response) {
+
+            this.props.rated()
             this.setState({
-                errMessage: e.message,
+                review: {
+                    comment: '',
+                    rate: "0",
+                    elementID: "",
+                    userId: this.props.userId
+                },
+                errMessage: '',
+                loading: false,
+                refreshList: true,
+            })
+        } else {
+            console.log('an error occurred')
+            let error = response.json()
+            this.setState({
                 loading: false,
             })
         }
+
     }
 
     commentSection = () => {
@@ -69,9 +55,8 @@ class Comments extends React.Component {
                 <h4>Your Review</h4>
                 <Col>
                     <Form.Group >
-                        <Form.Label htmlFor="comment">Comment:</Form.Label>
                         <Form.Control
-                            className="col col-12 m-0"
+                            className="commentBox"
                             as="textarea"
                             rows="3"
                             name="comment"
@@ -110,15 +95,13 @@ class Comments extends React.Component {
         const { id } = this.props;
         const review = { ...this.state.review }
         const name = event.currentTarget.name;
-        review.elementId = id;
+        review.elementID = id;
         review[name] = event.currentTarget.value
         this.setState({ review });
-        console.log(id)
     }
 
     render() {
-        const { id, onHide, show } = this.props;
-
+        const { id, onHide, rate, userId } = this.props;
 
         return (
             <Container
@@ -130,7 +113,7 @@ class Comments extends React.Component {
                     <Row>
 
 
-                        <Col className="m-1">
+                        {rate && <Col className="m-1">
                             {this.commentSection()}
                             {
                                 this.state.loading && (
@@ -143,10 +126,11 @@ class Comments extends React.Component {
                                 )
                             }
                         </Col>
+                        }
 
 
                         <Col>
-                            <CommentsList id={id} refreshList={this.state.refreshList} />
+                            <CommentsList id={id} userId={userId} refreshList={this.state.refreshList} />
                         </Col>
 
 
