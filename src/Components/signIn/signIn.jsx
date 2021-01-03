@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Form, Row, Spinner, Col, Button, Image, Nav } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
+import { checkEmail, checkPassword } from '../../validationUntilites';
 import { getFunction } from '../CRUDFunctions'
 import "../registrationPage/registration.css";
 
@@ -31,31 +32,12 @@ class SignIn extends React.Component {
         let errors = { ...this.state.errors }
         let SignIn = { ...this.state.SignIn }
         let current = SignIn[currentId]
-        if (currentId === 'email') errors[currentId] = this.checkEmail(current) ? false : true;
-        if (currentId === 'password') errors[currentId] = this.checkPassword(current) ? false : true;
+        if (currentId === 'email') errors[currentId] = checkEmail(current) ? false : true;
+        if (currentId === 'password') errors[currentId] = checkPassword(current) ? false : true;
         this.setState({ errors: errors })
         Object.values(errors).every((el) => el === false) && this.setState({ inputs: false })
     }
 
-    checkEmail = (email) => {
-        let index_found_at, index_found_dot;
-        //check if the string exists
-        if (email !== "undefined") {
-            index_found_at = email.search("@");
-
-            // Find the "@"
-            if (index_found_at > -1) {
-                //Check if there is only one "@" and if there is a "." after 3 char after "@"
-                if (email.includes("@", index_found_at + 1) !== true && email.includes(".", email.indexOf("@") + 3) === true) {
-                    index_found_dot = email.indexOf(".", index_found_at);
-                    //Check if there is only 1 "." after "@" and if the given string doesn't start or end with "@" and/or "."
-                    if (email.includes(".", index_found_dot + 1) !== true && (email.startsWith(".") || email.startsWith("@") || email.endsWith(".") || email.endsWith("@")) !== true) return true;
-                }
-            }
-        }
-    }
-
-    checkPassword = (password) => (password.length > 8 && /\d/.test(password) && /[a-zA-Z]/g.test(password)) ? true : false
     checkForm = async (e) => {
         e.preventDefault()
         const user = await getFunction("user?email=" + this.state.SignIn.email)
