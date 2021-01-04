@@ -1,6 +1,7 @@
 import { Image, Nav, Button, Form, Col, Row, Table, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ImageUploader from "react-images-upload";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 export const NavBar = (props) => {
     return (
@@ -18,11 +19,11 @@ export const Admin = ({ user, handleModal }) => {
         <>
             <h3>Admin</h3>
             <Row style={{ height: "30vh" }}>
-                <Col sm={4} className="pr-5" style={{ overflow: "hidden", height: "30vh" }} >
-                    <Image style={{ objectFit: "contain", height: "100%" }} src={image || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"} rounded />
+                <Col sm={4} className="p-0 d-none d-sm-flex justify-content-center align-items-center overflow-hidden w-100 h-100"   >
+                    <Image style={{ objectFit: "contain", minWidth: "100%", height: "100%", objectPosition: "100%" }} src={image || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"} rounded />
                 </Col>
                 <Col sm={8}>
-                    <div className="register m-0 p-0 ml-2 pl-3" >
+                    <div className="m-0 p-1 ml-2 pl-3" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
                         <div className="text-white mt-3 px-4">
                             <Row className="justify-content-between py-2 m-auto">Name: <strong>{name + " " + surname}</strong></Row>
                             <Row className="justify-content-between py-2 m-auto">E-mail:<strong>{email}</strong></Row>
@@ -30,20 +31,20 @@ export const Admin = ({ user, handleModal }) => {
                         </div>
                     </div>
                     <Row className="justify-content-end mr-2">
-                        <Button className="mx-1 my-1" variant={"outline-light"} onClick={() => handleModal("adminModal", true, "edit")} >Edit</Button>
-                        <Button className="mx-1 my-1" variant={"outline-light"} onClick={() => handleModal("deleteAdmin", true, "admin")}>Delete</Button>
+                        <Button className="m-1" variant={"outline-light"} onClick={() => handleModal("adminModal", true, "edit", user)} >Edit</Button>
+                        <Button className="m-1" variant={"outline-light"} onClick={() => handleModal("deleteAdmin", true, "admin", user)}>Delete</Button>
                     </Row>
                 </Col>
             </Row>
         </>
     )
 }
-export const Buttons = ({ handleModal }) => <Row>
+export const Buttons = ({ handleModal }) => <Row className=" mt-4">
     <Button as={Col} className="mx-1" variant={"outline-light"} onClick={() => handleModal("adminModal", true)}>Add Admin</Button>
 
     <Button as={Col} className="mx-1" variant={"outline-light"} onClick={() => handleModal("movieModal", true)}>Add Movie</Button>
 </Row >
-export const AdminModal = ({ show, errors, submit, handleModal, edit, onChange, formAdmin, validateForm, desabled, setImage }) => <>
+export const AdminModal = ({ show, passwordConfirm, errors, submit, handleModal, edit, onChange, formAdmin, validateForm, desabled, setImage }) => <>
     <Modal show={show} onHide={() => handleModal("adminModal", false)}>
         <Modal.Header closeButton>
             <Modal.Title>{edit ? "Edit Admin" : "Add new Admin"}</Modal.Title>
@@ -213,7 +214,7 @@ export const AdminModal = ({ show, errors, submit, handleModal, edit, onChange, 
                                 autoComplete="new-password"
                                 id="passwordConfirm"
                                 placeholder=""
-                                value={formAdmin.passwordConfirm}
+                                value={passwordConfirm}
                                 onChange={onChange}
                                 onBlur={validateForm}
                                 className={errors.passwordConfirm ? "error" : ""}
@@ -238,9 +239,9 @@ export const AdminModal = ({ show, errors, submit, handleModal, edit, onChange, 
                 <Button variant="outline-dark" className="rounded-0 p-1 px-5 " onClick={() => handleModal("adminModal", false)}>
                     Close
           </Button>
-                <Button variant="dark" disabled={desabled} className="rounded-0 p-1 px-3" type="submit" onClick={() => handleModal("adminModal", false)}>
-                    Save Changes
-          </Button>
+                <Button variant="dark" disabled={desabled} className="rounded-0 p-1 px-3" type="submit">
+                    {edit ? "Save Changes" : "Create new Admin"}
+                </Button>
             </Modal.Footer>
         </Form>
     </Modal >
@@ -258,7 +259,7 @@ export const DeleteModal = ({ show, type, handleModal, deleteFunction }) =>
             <Button variant="secondary" onClick={() => handleModal(type === "movie" ? "deleteMovie" : "deleteAdmin", false)}>
                 No
           </Button>
-            <Button variant="primary" onClick={(type) => deleteFunction(type)}>
+            <Button variant="primary" onClick={() => deleteFunction(type)}>
                 Yes
           </Button>
         </Modal.Footer>
@@ -266,39 +267,39 @@ export const DeleteModal = ({ show, type, handleModal, deleteFunction }) =>
 
 export const MovieList = ({ movies, handleModal }) => <Col>
     <h3> Movies & Media</h3>
-
-    <Table variant="dark" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} className="p-0" hover size="lg" responsive="md">
-        <thead>
-            <tr >
-                <th>#</th>
-                <th>Poster</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Year</th>
-                <th>Edit/Delete </th>
-            </tr>
-        </thead>
-        <tbody>
-            {movies.map((movie, key) => <tr key={key}>
-                <td>{key + 1}</td>
-                <td><Image src={movie.Poster ? movie.Poster : "https://place-hold.it/30"} height='30px' /></td>
-                <td>{movie.Title}</td>
-                <td>{movie.Type}</td>
-                <td>{movie.Year}</td>
-                <td>
-                    <Row>
-                        <Col><Button variant='dark' onClick={() => handleModal("movieModal", true, "edit", movie)} className="w-100 p-2">
-                            Edit
+    <Scrollbars style={{ height: "50vh" }}>
+        <Table variant="dark" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)", height: "50vh", overflowY: "scroll" }} className="p-0" hover size="lg" responsive="md">
+            <thead>
+                <tr >
+                    <th>#</th>
+                    <th>Poster</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Year</th>
+                    <th>Edit/Delete </th>
+                </tr>
+            </thead>
+            <tbody>
+                {movies.map((movie, key) => <tr key={key}>
+                    <td>{key + 1}</td>
+                    <td><Image src={movie.Poster ? movie.Poster : "https://place-hold.it/30"} height='30px' /></td>
+                    <td>{movie.Title}</td>
+                    <td>{movie.Type}</td>
+                    <td>{movie.Year}</td>
+                    <td>
+                        <Row>
+                            <Col><Button variant='dark' onClick={() => handleModal("movieModal", true, "edit", movie)} className="w-100 p-2">
+                                Edit
               </Button></Col>
-                        <Col>
-                            <Button onClick={() => handleModal("deleteMovie", true, "", movie)} variant='outline-secondary' className="m-1 p-2 rounded-0 w-100">
-                                Delete
+                            <Col>
+                                <Button onClick={() => handleModal("deleteMovie", true, "", movie)} variant='outline-secondary' className="m-1 p-2 rounded-0 w-100">
+                                    Delete
               </Button></Col></Row></td>
-            </tr>)}
-        </tbody>
-    </Table>
-
-</Col>
+                </tr>)}
+            </tbody>
+        </Table>
+    </Scrollbars>
+</Col >
 
 
 export const MovieModal = ({ show, edit, handleModal, onChange, formMovie, submit, setImage }) =>
@@ -372,16 +373,18 @@ export const MovieModal = ({ show, edit, handleModal, onChange, formMovie, submi
 
 
 export const AdminList = ({ admins, viewAdmin }) =>
-    <div className="mt-3">
+    <div className="mt-3" >
         <h5 >Admin List</h5>
-        <Table variant="dark" className="register p-0" style={{ height: "30vh", overflowY: "scroll" }} hover size="sm">
-            <tbody >
-                {admins.map((admin) => <tr onClick={() => viewAdmin("formAdmin", admin)}>
-                    <td style={{ overflow: "hidden", height: "8vh" }}> <Image style={{ objectFit: "contain", height: "100%" }} src={admin.image || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"} rounded /></td>
-                    <td className=" text-white w-100">{admin.name} {admin.surname}</td>
-                </tr>)}
-            </tbody>
-        </Table>
+        <Scrollbars style={{ height: "25vh" }}>
+            <Table variant="dark" className="p-1" style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }} hover size="sm">
+                <tbody >
+                    {admins.map((admin, key) => <tr key={key} onClick={() => viewAdmin("currentAdmin", admin)}>
+                        <td style={{ overflow: "hidden", height: "8vh", width: "8vh" }}> <Image style={{ objectFit: "contain", height: "100%" }} src={admin.image || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"} rounded /></td>
+                        <td className=" text-white w-100">{admin.name} {admin.surname}</td>
+                    </tr>)}
+                </tbody>
+            </Table>
+        </Scrollbars>
     </div>
 
 

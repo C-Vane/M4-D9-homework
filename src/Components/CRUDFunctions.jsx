@@ -71,7 +71,7 @@ const deleteFunction = async (endp) => {
             method: "DELETE",
         });
         if (response.ok) {
-            return await response.text()
+            return await response
         } else {
             console.log(await response.text());
             return false;

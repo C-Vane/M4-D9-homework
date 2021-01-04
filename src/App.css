@@ -136,3 +136,13 @@ section {
   left: 0;
   right: 0;
 }
+.account {
+  min-height: 100vh;
+  background-color: #eeeeee;
+}
+.account .marngin-top {
+  border-top: #c0c0c0 solid 1px;
+}
+.account .marngin-top-light {
+  border-top: #e2e1e1 solid 1px;
+}

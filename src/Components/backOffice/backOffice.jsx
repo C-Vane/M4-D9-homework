@@ -47,12 +47,13 @@ class BackOffice extends React.Component {
             surname: 0,
             yearOfBirth: 0,
         },
-        inputs: true
+        inputs: true,
+        passwordConfirm: ""
     }
-    handleModal = (element, status, type, movie) => {
+    handleModal = (element, status, type, data) => {
         const state = { ...this.state };
         state[element] = status;
-        state.formAdmin = (element === "adminModal") && !status ? {
+        state.formAdmin = element === "adminModal" && status ? { ...data } : {
             address: "",
             city: "",
             email: "",
@@ -62,16 +63,15 @@ class BackOffice extends React.Component {
             role: "admin",
             surname: "",
             yearOfBirth: 0,
-        } : { ...state.currentAdmin }
-        state.formMovie = (element === "movieModal") && !status ? {
+        }
+        state.formMovie = (element === "movieModal" || element === "deleteMovie") && status ? { ...data } : {
             Poster: "",
             Title: "",
             Type: "",
             Year: "",
-        } : { ...state.currentMovie }
+        }
         state.editAdmin = element === "adminModal" && type === "edit" ? true : false;
         state.editMovie = element === "movieModal" && type === "edit" ? true : false;
-        state.currentMovie = movie || {};
         this.setState(state)
     }
     componentDidMount = () => {
@@ -79,7 +79,7 @@ class BackOffice extends React.Component {
         this.getData("movies")
     }
     getData = async (endp) => {
-        const response = await getFunction(endp === "admins" ? "user/admin" : "media")
+        const response = await getFunction(endp === "admins" ? "user/admin" : "media/")
         if (response) {
             const state = { ...this.state }
             state[endp] = response
@@ -90,10 +90,15 @@ class BackOffice extends React.Component {
     }
     onChange = (e) => {
         if (this.state.adminModal) {
+
             let formAdmin = { ...this.state.formAdmin }
             let currentId = e.currentTarget.id
-            formAdmin[currentId] = e.currentTarget.value
-            this.setState({ formAdmin })
+            if (currentId === "passwordConfirm")
+                this.setState({ passwordConfirm: e.currentTarget.value })
+            else {
+                formAdmin[currentId] = e.currentTarget.value
+                this.setState({ formAdmin })
+            }
         } else {
             let formMovie = { ...this.state.formMovie }
             let currentId = e.currentTarget.id
@@ -108,6 +113,7 @@ class BackOffice extends React.Component {
     }
     validateFormAdmin = (e) => {
         let currentId = e.currentTarget.id
+        const { passwordConfirm } = this.state
         let errorsAdmin = { ...this.state.errorsAdmin }
         let formAdmin = { ...this.state.formAdmin }
         let current = formAdmin[currentId]
@@ -127,7 +133,7 @@ class BackOffice extends React.Component {
                 errorsAdmin[currentId] = checkPassword(current) ? false : true;
                 break;
             case 'passwordConfirm':
-                errorsAdmin[currentId] = current === formAdmin.password ? false : true;
+                errorsAdmin[currentId] = passwordConfirm === formAdmin.password ? false : true;
                 Object.keys(this.state.formAdmin).forEach((key) => {
                     if (this.state.formAdmin[key] !== '') {
                         currentId = key
@@ -153,6 +159,9 @@ class BackOffice extends React.Component {
                                 break;
                             case 'postalCode':
                                 errorsAdmin[currentId] = checkPostalCode(current) ? false : true;
+                                break;
+                            case 'password':
+                                errorsAdmin[currentId] = checkPassword(current) ? false : true;
                                 break;
                             default:
                                 console.log("Error occurd in Validation")
@@ -186,15 +195,13 @@ class BackOffice extends React.Component {
     postSubmit = async (type) => {
         this.setState({ loading: true })
         const { formAdmin, formMovie, currentImage } = this.state
-        const response = type === "admins" ? await postFunction("user/", formAdmin) : await postFunction("media", formMovie)
+        const response = type === "admins" ? await postFunction("user/admin", formAdmin) : await postFunction("media", formMovie)
         if (response) {
-            console.log(response)
             if (currentImage.length > 0) {
                 let formData = new FormData();
                 let blob = new Blob([currentImage[0]], { type: "img/jpeg" });
                 formData.append("image", blob);
-                const uploadImage = type === "admins" ? await postFunctionImage("user/" + response.imdbID + "/upload", formData) : await postFunctionImage("media/" + response.imdbID + "/upload", formData)
-                console.log(uploadImage)
+                type === "admins" ? await postFunctionImage("user/" + response._id + "/upload", formData) : await postFunctionImage("media/" + response.imdbID + "/upload", formData)
             }
             this.setState({
                 currentAdmin: {},
@@ -214,24 +221,26 @@ class BackOffice extends React.Component {
                     surname: 0,
                     yearOfBirth: 0,
                 },
-                inputs: true
+                inputs: true,
+                passwordConfirm: ""
             })
             this.getData(type)
+
         } else {
             this.setState({ errMessage: response })
         }
     }
     editSubmit = async (type) => {
         this.setState({ loading: true })
-        const { currentAdmin, formAdmin, currentMovie, formMovie, currentImage } = this.state
-        const response = type === "admins" ? await putFunction("user/admin/" + currentAdmin._id, formAdmin) : await putFunction("media/" + currentMovie.imdbID, formMovie)
+        const { formAdmin, formMovie, currentImage } = this.state
+        const response = type === "admins" ? await putFunction("user/admin/" + formAdmin._id, formAdmin) : await putFunction("media/" + formMovie.imdbID, formMovie)
+
         if (response) {
             if (currentImage.length > 0) {
                 let formData = new FormData();
                 let blob = new Blob([currentImage[0]], { type: "img/jpeg" });
                 formData.append("image", blob);
-                const uploadImage = type === "admins" ? await postFunctionImage("user/" + currentAdmin._id + "/upload", formData) : await postFunctionImage("media/" + currentMovie._id + "/upload", formData)
-                console.log(uploadImage)
+                type === "admins" ? await postFunctionImage("user/" + formAdmin._id + "/upload", formData) : await postFunctionImage("media/" + formMovie._id + "/upload", formData)
             }
             this.setState({
                 currentAdmin: {},
@@ -253,7 +262,8 @@ class BackOffice extends React.Component {
                     surname: 0,
                     yearOfBirth: 0,
                 },
-                inputs: true
+                inputs: true,
+                passwordConfirm: ""
             })
             this.getData(type)
         } else {
@@ -261,14 +271,13 @@ class BackOffice extends React.Component {
         }
     }
     deleteSubmit = async (type) => {
-        this.setState({ loading: true })
-        const { currentAdmin, currentMovie } = this.state
-        const response = type === "admin" ? await deleteFunction("user/" + currentAdmin._id) : await deleteFunction("media/" + currentMovie.imdbID)
-        if (response) {
-            console.log(response)
+        this.setState({ loading: true, })
+        const { currentAdmin, formMovie } = this.state
+        const response = type === "admin" ? await deleteFunction("user/" + currentAdmin._id) : await deleteFunction("media/" + formMovie.imdbID)
+        if (response.ok) {
             this.getData(type === "admin" ? "admins" : "media")
 
-            this.setState({ loading: false, currentMovie: {}, movieModal: false, adminModal: false })
+            this.setState({ loading: false, formMovie: {}, deleteAdmin: false, deleteMovie: false })
         } else {
             this.setState({ errMessage: response })
         }
@@ -283,10 +292,12 @@ class BackOffice extends React.Component {
             editMovie ? this.editSubmit("movie") : this.postSubmit("movie")
         }
     }
+
+
     setImage = (image) => this.setState({ currentImage: image })
     render() {
         const { logOut, admin } = this.props
-        const { adminModal, admins, currentAdmin, editAdmin, formAdmin, inputs, errorsAdmin, deleteAdmin, movies, deleteMovie, movieModal, currentMovie, formMovie, editMovie, } = this.state
+        const { adminModal, passwordConfirm, admins, currentAdmin, editAdmin, formAdmin, inputs, errorsAdmin, deleteAdmin, movies, deleteMovie, movieModal, formMovie, editMovie, } = this.state
         return <div className="background text-white">
             <NavBar logOut={logOut} />
             <Container className="mt-4">
@@ -298,10 +309,12 @@ class BackOffice extends React.Component {
                         <AdminList admins={admins} viewAdmin={this.current} />
                     </Col>
                 </Row>
+
                 <Row>
                     <MovieList movies={movies} handleModal={this.handleModal} />
                 </Row>
-                <AdminModal show={adminModal} edit={editAdmin} handleModal={this.handleModal} onChange={this.onChange} formAdmin={formAdmin} validateForm={this.validateFormAdmin} desabled={inputs} errors={errorsAdmin} submit={this.formSubmit} setImage={this.setImage} />
+
+                <AdminModal show={adminModal} edit={editAdmin} handleModal={this.handleModal} onChange={this.onChange} formAdmin={formAdmin} validateForm={this.validateFormAdmin} desabled={inputs} errors={errorsAdmin} submit={this.formSubmit} setImage={this.setImage} passwordConfirm={passwordConfirm} />
                 <MovieModal show={movieModal} edit={editMovie} handleModal={this.handleModal} onChange={this.onChange} formMovie={formMovie} submit={this.formSubmit} setImage={this.setImage} />
                 <DeleteModal show={deleteAdmin || deleteMovie} type={deleteAdmin ? "admin" : "movie"} handleModal={this.handleModal} deleteFunction={this.deleteSubmit} />
             </Container>

@@ -19,7 +19,7 @@ class SignIn extends React.Component {
         loading: false,
         inputs: true,
         show: false,
-        redirect: false,
+        redirect: "",
     }
     updateSignInField = (e) => {
         let SignIn = { ...this.state.SignIn }
@@ -118,7 +118,7 @@ class SignIn extends React.Component {
 
                         </Col>
                     </Row>
-                    <Button type="submit" id="sign in" variant="danger" disabled={this.state.inputs}>Sign up</Button>
+                    <Button type="submit" id="sign in" variant="danger" disabled={this.state.inputs}>Sign In</Button>
                 </Form>
             </Container>
 

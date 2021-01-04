@@ -13,7 +13,7 @@
 a > ul {
   padding-inline-start: 0;
 }
-.dropdown .contain {
+.contain {
   display: flex;
   justify-content: center;
   align-items: center;

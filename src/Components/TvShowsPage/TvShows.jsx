@@ -36,14 +36,15 @@ class TvShows extends React.Component {
     render() {
         const { movies, loading } = this.state
         const { history } = this.props
-        return <div>
+        return <Container>
+            <h1 className="text-white-50">Tv Shows</h1>
             {loading ? <Row className="ml-2 d-flex justify-content-center ">
                 <Spinner animation="border" variant="light" size="lg" style={{ height: "100px", width: "100px", marginTop: "20vh", marginBottom: "20vh" }}>
                     <span className="sr-only">Loading...</span>
                 </Spinner>
             </Row> : <Results results={movies} history={history} />
             }
-        </div>;
+        </Container>;
     }
 
 }

@@ -62,7 +62,7 @@
 .form-group {
   margin: 0;
 }
-.form-control:not(.searchbox):not(.commentBox) {
+.form-control:not(.searchbox):not(.commentBox):not(#redeem) {
   padding-top: 25px;
   height: 50px;
 }
