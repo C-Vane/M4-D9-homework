@@ -426,8 +426,8 @@ class Registration extends React.Component {
                 <Modal.Body>
                     <Table size="sm" responsive>
                         <tbody>
-                            {Object.keys(this.state.registration).map((key) =>
-                                <tr>
+                            {Object.keys(this.state.registration).map((key, n) =>
+                                <tr key={n} >
                                     <td><strong>{key.split(/(?=[A-Z])/).join(" ").toUpperCase()}</strong></td>
                                     <td>{this.state.registration[key]}</td>
                                 </tr>

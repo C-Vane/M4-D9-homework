@@ -63,7 +63,6 @@ class ShowDetail extends React.Component {
   fetchMyList = async () => {
     const response = await getFunction("user/" + this.props.user._id + "/myList")
     if (response) {
-      console.log(response)
       const added = response.find((id) => id === this.props.match.params.id)
       this.setState({ myList: added })
     }

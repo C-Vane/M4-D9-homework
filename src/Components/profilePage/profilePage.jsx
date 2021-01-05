@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { Image, Nav, Button, Row, Col, Alert, FormGroup, Form, FormControl, FormLabel, Container } from 'react-bootstrap';
 import ImageUploader from "react-images-upload";
 import { Link } from 'react-router-dom';
@@ -12,7 +11,7 @@ const ProfilePage = (props) => {
     const [image, setImage] = useState()
     const [msg, setMsg] = useState()
 
-    const getUser = () => { }
+    //const getUser = () => { }
     const updateImage = async () => {
         setImageUpload(false)
         let formData = new FormData();
@@ -21,7 +20,7 @@ const ProfilePage = (props) => {
         await postFunctionImage("user/" + user._id + "/upload", formData)
         setUser(props.getId(user._id))
     }
-    const updateUser = () => { }
+    //const updateUser = () => { }
     const deleteProfile = async () => {
         const response = await deleteFunction("user/" + user._id);
         setMsg(response)
@@ -33,7 +32,7 @@ const ProfilePage = (props) => {
 
     return <div id="profile">
         <Nav>
-            <Link to="/">
+            <Link to="/main">
                 <Image src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="netflix-font"
                     style={{ backgroundColor: "transparent" }} width="150px" /></Link>
         </Nav>
@@ -84,7 +83,7 @@ const ProfilePage = (props) => {
                         <Form>
 
                             <FormGroup as={Row}>
-                                <FormControl className="pb-2 mt-2" type="text" id="name" value={user.name || "Strive Student"} />
+                                <FormControl className="pb-2 mt-2" type="text" id="name" value={user.name || "Strive Student"} readOnly />
                             </FormGroup>
 
                             <FormGroup as={Row}>
@@ -132,7 +131,7 @@ const ProfilePage = (props) => {
                     <Link to="/main">
                         <Button variant="primary">SAVE</Button></Link>
                     <Button onClick={() => setUser(props.user)} variant="secondary">CANCEL</Button>
-                    <Button variant="secondary" onClick={deleteProfile}>DELETE PROFILE</Button>
+                    <Button variant="secondary" className="d-none" onClick={deleteProfile}>DELETE PROFILE</Button>
                 </Container>
             </Container>
 

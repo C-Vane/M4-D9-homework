@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Col, Container, Form, Image, Row, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { checkcardExpiry, checkcardNumber, checkEmail, checkPassword, checkPostalCode, SettingsModal } from '../../validationUntilites';
 import { DeleteModal } from '../backOffice/backOfficeUtils';
 import { deleteFunction, putFunction } from '../CRUDFunctions';
 
@@ -11,6 +12,7 @@ const AccountPage = ({ getId, user, logOut }) => {
     const [deleteModal, setDeleteModal] = useState(false)
     const [type, setType] = useState()
     const [alert, setAlert] = useState()
+    const [error, setError] = useState(0)
     const deleteAccount = async () => {
         const response = await deleteFunction("/user" + user._id)
         setAlert(response)
@@ -32,6 +34,7 @@ const AccountPage = ({ getId, user, logOut }) => {
     }
     const onChange = (e) => {
         const current = currentUser
+        console.log(e.currentTarget.value)
         current[e.currentTarget.id] = e.currentTarget.value
         setCurrentUser(current)
     }
@@ -41,6 +44,27 @@ const AccountPage = ({ getId, user, logOut }) => {
         } else {
             setType(item)
             setModal(!modal)
+        }
+
+    }
+    const validateForm = (item) => {
+        switch (item) {
+            case "email":
+                setError(checkEmail(currentUser.email) ? true : "Email should include @ . and be longer than 4 chars")
+                break;
+            case "password":
+                setError(checkPassword(currentUser.password) ? true : "Password should be longer than 8 chars, 1 digit, 1 letter")
+                break;
+            case "payment":
+                setError(checkcardNumber(currentUser.cardNumber) && checkcardExpiry(currentUser.cardExpDate) && currentUser.cvvNumber.length > 2 ? true : "Payment method is not Correct")
+                break;
+            case "address":
+                setError(checkPostalCode(currentUser.postalCode) && currentUser.city.length > 2 && currentUser.address.length > 4 ? true : "Address is not correct")
+                break;
+
+            default:
+                setError(true)
+                break;
         }
     }
     return <div className="account">
@@ -54,15 +78,15 @@ const AccountPage = ({ getId, user, logOut }) => {
                 </Col>
                 <Col md={8} >
                     <Row className="flex-column align-items-end pr-3">
-                        <Button variant="link" className="p-0 m-0">Change email</Button>
-                        <Button variant="link" className="p-0 m-0">Change password</Button>
-                        <Button variant="link" className="p-0 m-0">Add phone number</Button>
-                        <Button variant="link" className="p-0 m-0">Email preferences</Button>
+                        <Button variant="link" className="p-0 m-0" onClick={() => handleModal("email")}>Change email</Button>
+                        <Button variant="link" className="p-0 m-0" onClick={() => handleModal("password")}>Change password</Button>
+                        <Button variant="link" className="p-0 m-0" onClick={() => handleModal("phoneNumber")}>Add phone number</Button>
+                        <Button variant="link" className="p-0 m-0" onClick={() => handleModal()}>Email preferences</Button>
                     </Row>
                     <Row className="marngin-top-light pt-2 mt-4 flex-column pr-3">
-                        <div className="d-flex justify-content-between"><i><i className="fab fa-paypal"></i> PayPal</i><Button variant="link" className="p-0 m-0">Update payment info</Button></div>
+                        <div className="d-flex justify-content-between"><i><i className="fab fa-paypal"></i> PayPal</i><Button variant="link" className="p-0 m-0" onClick={() => handleModal("payment")}>Update payment info</Button></div>
 
-                        <Button variant="link" className="p-0 m-0 align-self-end">Billing details</Button>
+                        <Button variant="link" className="p-0 m-0 align-self-end" onClick={() => handleModal("address")}>Billing details</Button>
                     </Row>
                 </Col>
             </Row>
@@ -124,6 +148,7 @@ const AccountPage = ({ getId, user, logOut }) => {
             </Row>
         </Container>
         <DeleteModal show={deleteModal} type={"account"} deleteFunction={deleteAccount} handleModal={handleModal} />
+        <SettingsModal show={modal} type={type} onChange={onChange} handleModal={handleModal} validateForm={validateForm} updateAccount={updateAccount} currentUser={currentUser} error={error} />
     </div >;
 }
 

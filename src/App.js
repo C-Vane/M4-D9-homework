@@ -6,7 +6,7 @@ import LandingPage from "./Components/landingPage/landingPage";
 import Nav from "./Components/nav";
 import Main from "./Components/homePage/main";
 import Footer from "./Components/footer";
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import TvShows from "./Components/TvShowsPage/TvShows";
 import Registration from "./Components/registrationPage/Registration";
 import SignIn from "./Components/signIn/signIn";
@@ -36,7 +36,6 @@ class App extends React.Component {
   logOut = () => this.setState({ user: {}, auth: false });
   render() {
     const { user, auth, admin } = this.state;
-    console.log(user, auth, admin);
     return (
       <div className='App'>
         <Router>
