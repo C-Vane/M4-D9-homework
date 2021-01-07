@@ -86,13 +86,13 @@ class CommentsList extends React.Component {
     }
     reviewItem = (review) => {
         const { userId, _id, key, comment, rate, createdAt } = review
-        return <ListGroup.Item key={key} className="d-flex flex-column justify-content-between p-1 pb-0">
+        return <ListGroup.Item key={key + createdAt} className="d-flex flex-column justify-content-between p-1 pb-0">
 
             <div className="d-flex justify-content-between">
                 <small></small>
                 {userId === this.props.userId && <div>
                     <Button className="px-2 py-0 mr-1" variant="outline-danger" id={_id} onClick={this.deleteComment}> X </Button>
-                    <Button className="px-2 py-0 mr-1" variant="outline-dark" id={_id} onClick={() => this.editModal(review)}> <span class="fa fa-pen fa-sm" aria-hidden="true"></span> </Button>
+                    <Button className="px-2 py-0 mr-1" variant="outline-dark" id={_id} onClick={() => this.editModal(review)}> <span className="fa fa-pen fa-sm" aria-hidden="true"></span> </Button>
                 </div>}
             </div>
 

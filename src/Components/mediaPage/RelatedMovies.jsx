@@ -8,7 +8,7 @@ class RelatedMovies extends React.Component {
         episodes: [],
         loading: true,
     }
-    url = "http://www.omdbapi.com/?apikey=ff133ca5&"
+    url = "https://www.omdbapi.com/?apikey=ff133ca5&"
     fetchMovies = async (id, type) => {
         try {
             let response = await fetch(this.url + id);
