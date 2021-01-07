@@ -1,5 +1,5 @@
 const url = process.env.REACT_APP_URL
-const getFunction = async (endp) => {
+export const getFunction = async (endp) => {
     try {
         const response = await fetch(url + endp);
         if (response.ok) {
@@ -12,7 +12,7 @@ const getFunction = async (endp) => {
     }
 };
 
-const postFunction = async (endp, data) => {
+export const postFunction = async (endp, data) => {
     try {
         const response = await fetch(url + endp, {
             method: "POST",
@@ -31,7 +31,7 @@ const postFunction = async (endp, data) => {
         console.log(error);
     }
 };
-const postFunctionImage = async (endp, data) => {
+export const postFunctionImage = async (endp, data) => {
     try {
         const response = await fetch(url + endp, {
             method: "POST",
@@ -47,7 +47,7 @@ const postFunctionImage = async (endp, data) => {
         console.log(error);
     }
 };
-const putFunction = async (endp, data) => {
+export const putFunction = async (endp, data) => {
     try {
         const response = await fetch(url + endp, {
             method: "PUT",
@@ -65,7 +65,7 @@ const putFunction = async (endp, data) => {
         console.log(error);
     }
 };
-const deleteFunction = async (endp) => {
+export const deleteFunction = async (endp) => {
     try {
         const response = await fetch(url + endp, {
             method: "DELETE",
@@ -81,10 +81,3 @@ const deleteFunction = async (endp) => {
     }
 };
 
-module.exports = {
-    getFunction,
-    postFunction,
-    postFunctionImage,
-    deleteFunction,
-    putFunction,
-};
