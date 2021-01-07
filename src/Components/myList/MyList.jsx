@@ -27,7 +27,7 @@ const MyList = ({ user, history }) => {
     useEffect(() => {
         getList()
     }, [])
-    const removeFromList = async () => { }
+    //const removeFromList = async () => { }
     return <div>
         {alert && <Alert variant="warning">{alert}</Alert>}
         <Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col, Image, Form, Button, ToggleButtonGroup, ToggleButton, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, ToggleButtonGroup, ToggleButton, Spinner } from 'react-bootstrap';
 import CommentsList from './CommentsList';
 import "./Comments.css"
 import { postFunction } from '../CRUDFunctions';
@@ -40,7 +40,7 @@ class Comments extends React.Component {
             })
         } else {
             console.log('an error occurred')
-            let error = response.json()
+            //let error = response.json()
             this.setState({
                 loading: false,
             })

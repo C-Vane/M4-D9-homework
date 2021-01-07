@@ -1,5 +1,4 @@
 import React from 'react';
-import { propTypes } from 'react-bootstrap/esm/Image';
 import { Carousel, Row, Spinner } from 'react-bootstrap';
 import MovieItem from '../MovieItem';
 import PropTypes from 'prop-types';
@@ -11,7 +10,7 @@ class carouselItem extends React.Component {
         index: 0,
         loading: true,
     }
-    url = "http://www.omdbapi.com/?apikey=ff133ca5&s="
+    url = "https://www.omdbapi.com/?apikey=ff133ca5&s="
     pages = ['1', '2', '3']
 
     componentDidMount = () => {
@@ -72,6 +71,7 @@ class carouselItem extends React.Component {
                                         else if (i > 3) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
                                         else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
+                                    return i
                                 })
                                 }
                             </Row>
@@ -86,6 +86,7 @@ class carouselItem extends React.Component {
                                         else if (i > 10) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
                                         else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
+                                    return i
                                 })
                                 }
                             </Row>
@@ -100,6 +101,7 @@ class carouselItem extends React.Component {
                                         else if (i > 16) return <MovieItem key={i} movie={single_movie} history={history} addclass="desktop"></MovieItem>
                                         else return <MovieItem key={i} movie={single_movie} history={history} ></MovieItem>
                                     }
+                                    return i
                                 })
                                 }
                             </Row>

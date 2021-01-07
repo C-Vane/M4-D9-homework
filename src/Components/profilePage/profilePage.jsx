@@ -83,12 +83,12 @@ const ProfilePage = (props) => {
                         <Form>
 
                             <FormGroup as={Row}>
-                                <FormControl className="pb-2 mt-2" type="text" id="name" value={user.name || "Strive Student"} readOnly />
+                                <FormControl className="pb-2 mt-2" type="text" id="name" defaultValue={user.name || "Strive Student"} readOnly />
                             </FormGroup>
 
                             <FormGroup as={Row}>
-                                <FormLabel for="google_translate_element">Language:
-                                        <div id="google_translate_element" class="language">
+                                <FormLabel htmlFor="google_translate_element">Language:
+                                        <div id="google_translate_element" className="language">
                                     </div>
                                 </FormLabel>
 
@@ -96,7 +96,7 @@ const ProfilePage = (props) => {
 
 
                             <FormGroup as={Row}>
-                                <FormLabel for="maturity">Maturity Settings:
+                                <FormLabel htmlFor="maturity">Maturity Settings:
                                         <FormControl type="text" id="maturity"
                                         value="ALL MATURITY RATINGS" />
                                     <span> Show titles of all maturity ratings for this profile.</span>
@@ -108,17 +108,17 @@ const ProfilePage = (props) => {
 
                             <section id='section3'>
 
-                                <div class="form-group row">
+                                <div className="form-group row">
                                     <label> Autoplay constols</label>
-                                    <label class="checkbox">Autoplay next episode in a series on all devices.
+                                    <label className="checkbox">Autoplay next episode in a series on all devices.
                                         <input type="checkbox" />
-                                        <span class="checkmark"></span>
+                                        <span className="checkmark"></span>
                                     </label>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="checkbox">Autoplay previews while browsing on all devices.
+                                <div className="form-group row">
+                                    <label className="checkbox">Autoplay previews while browsing on all devices.
                                         <input type="checkbox" />
-                                        <span class="checkmark"></span>
+                                        <span className="checkmark"></span>
                                     </label>
                                 </div>
 

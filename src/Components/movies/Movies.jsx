@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Alert, Container, Row, Spinner } from 'react-bootstrap';
 
 const Movies = ({ user }) => {
-    const { Movies, setMovies } = useState()
+    //const { Movies, setMovies } = useState()
     const { alert, setAlert } = useState()
     const { loading, setLoading } = useState(true)
-    const getList = async () => { }
+    //const getList = async () => { }
     return <div>
         {alert && <Alert variant="warning"></Alert>}
         <Container>

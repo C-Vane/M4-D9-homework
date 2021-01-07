@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MovieItem from '../MovieItem';
 import { Spinner, Container, Row } from 'react-bootstrap';
 import Results from '../homePage/Results'
 
@@ -9,7 +8,7 @@ class TvShows extends React.Component {
         loading: true,
         movies: [],
     }
-    url = "http://www.omdbapi.com/?apikey=ff133ca5&";
+    url = "https://www.omdbapi.com/?apikey=ff133ca5&";
     pages = ['1', '2', '3', '4', '5']
     componentDidMount = () => {
         this.pages.forEach(page => this.fetchMovies(page));

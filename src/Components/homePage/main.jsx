@@ -19,7 +19,7 @@ class Main extends React.Component {
             return { ...prevState, search, searching: false }
         });
     }
-    url = "http://www.omdbapi.com/?apikey=ff133ca5&s=";
+    url = "https://www.omdbapi.com/?apikey=ff133ca5&s=";
 
     search = (e) => {
         if (e.key === "Enter") this.fetchMovies(this.state.search)

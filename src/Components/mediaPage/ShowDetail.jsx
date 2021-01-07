@@ -4,7 +4,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col, Image, Jumbotron, Badge, Button } from "react-bootstrap";
 import Comments from "./Comments";
-import Results from "../homePage/Results";
 import RelatedMovies from "./RelatedMovies";
 import { getFunction, postFunction, deleteFunction } from "../CRUDFunctions";
 
@@ -139,7 +138,6 @@ class ShowDetail extends React.Component {
             className="gradientOnJumbo"
             style={{
               content: "",
-              background: "rgb(20, 20, 20)",
               background:
                 "linear-gradient(270deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 1))",
               position: "absolute",

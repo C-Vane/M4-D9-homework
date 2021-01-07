@@ -64,7 +64,6 @@ class Jumbo extends React.Component {
           className="gradientOnJumbo"
           style={{
             content: "",
-            background: "rgb(20, 20, 20)",
             background:
               "linear-gradient(180deg, rgba(20, 20, 20, 0) 34%, rgba(20, 20, 20, 1) 100%)",
             position: "absolute",
@@ -79,7 +78,6 @@ class Jumbo extends React.Component {
           className="gradientOnJumbo"
           style={{
             content: "",
-            background: "rgb(20, 20, 20)",
             background:
               "linear-gradient(270deg, rgba(20, 20, 20, 0), rgba(20, 20, 20, 1))",
             position: "absolute",

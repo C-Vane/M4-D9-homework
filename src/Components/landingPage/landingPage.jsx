@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Image, Nav, Button, Form, Col } from 'react-bootstrap';
+import { Image, Nav, Button, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import "../registrationPage/registration.css";
 

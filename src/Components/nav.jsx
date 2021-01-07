@@ -104,7 +104,7 @@ const NavBar = (props) => {
                 <Button variant="btn">
                   <div className="contain">
                     <Image
-                      src={props.user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
+                      src={user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
                     />
                   </div>
                 </Button>
@@ -114,9 +114,9 @@ const NavBar = (props) => {
                     <Row>
                       <div className="mr-1 contain" >
                         <Image
-                          src={props.user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
+                          src={user.image || "https://mir-s3-cdn-cf.behance.net/project_modules/disp/366be133850498.56ba69ac36858.png"}
                         /></div>
-                      <span>{props.user.name ? props.user.name : "Strive Student"}</span></Row>
+                      <span>{user.name ? user.name : "Strive Student"}</span></Row>
                   </Dropdown.Item>
 
                   <Dropdown.Item eventKey="2"><Link to='/profile'>
